@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS bootcamps (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description VARCHAR(255) NOT NULL,
+    launch_date DATE NOT NULL,
+    duration INT NOT NULL
+);
