@@ -9,8 +9,7 @@ public enum ErrorCode {
     VALIDATION_ERROR("SE_006", "Validation error"),
     CAPABILITY_SERVICE_UNAVAILABLE("SE007", "Capability service is currently unavailable"),
     INVALID_PAGINATION_PARAMS("SE008", "Page must be >= 0 and size must be > 0"),
-    INVALID_SORT_PARAMS("SE009", "Invalid sortBy value(name, capabilityCount) or sortDirection(ASC, DESC)"),
-    RETRIEVE_TECHNOLOGIES_ERROR("SE010", "Error retrieving capabilities");
+    INVALID_SORT_PARAMS("SE009", "Invalid sortBy value(name, capabilityCount) or sortDirection(ASC, DESC)");
 
 
     private final String code;
