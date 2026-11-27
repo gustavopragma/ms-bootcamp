@@ -21,8 +21,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 
 @Configuration
 public class BootcampRouter {
@@ -71,11 +70,32 @@ public class BootcampRouter {
                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
                 }
             )
+        ),
+        @RouterOperation(
+            path = "/api/v1/bootcamps/{bootcampId}",
+            method = RequestMethod.DELETE,
+            beanClass = BootcampHandler.class,
+            beanMethod = "deleteBootcamp",
+            operation = @Operation(
+                operationId = "deleteBootcamp",
+                summary = "delete a bootcamp and its capabilities and technologies",
+                parameters = {
+                    @Parameter(name = "bootcampId", in = ParameterIn.PATH, required = true, description = "Bootcamp id", example = "1")
+                },
+                responses = {
+                    @ApiResponse(responseCode = "204", description = "Bootcamp deleted successfully"),
+                    @ApiResponse(responseCode = "400", description = "Bootcamp not found",
+                        content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                        content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+                }
+            )
         )
     })
     public RouterFunction<ServerResponse> bootcampRoutes(BootcampHandler handler) {
         return RouterFunctions
             .route(POST("/api/v1/bootcamps"), handler::registerBootcamp)
-            .andRoute(GET("/api/v1/bootcamps"), handler::listBootcamps);
+            .andRoute(GET("/api/v1/bootcamps"), handler::listBootcamps)
+            .andRoute(DELETE("/api/v1/bootcamps/{bootcampId}"), handler::deleteBootcamp);
     }
 }

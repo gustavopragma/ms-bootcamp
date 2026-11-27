@@ -9,4 +9,6 @@ public interface BootcampRepository {
     Mono<Bootcamp> save(Bootcamp bootcamp);
     Mono<Void> deleteById(Long id);
     Flux<Bootcamp> findAll();
+    Mono<Bootcamp> findById(Long id);
+    Mono<Void> saveWithId(Bootcamp bootcamp);
 }

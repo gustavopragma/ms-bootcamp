@@ -42,4 +42,20 @@ public class BootcampRepositoryImpl implements BootcampRepository {
         return mySqlBootcampRepository.findAll()
             .map(bootcampEntityMapper::toDomain);
     }
+
+    @Override
+    public Mono<Bootcamp> findById(Long id) {
+        return mySqlBootcampRepository.findById(id).map(bootcampEntityMapper::toDomain);
+    }
+
+    @Override
+    public Mono<Void> saveWithId(Bootcamp bootcamp) {
+        return mySqlBootcampRepository.saveWithId(
+            bootcamp.getId(),
+            bootcamp.getName(),
+            bootcamp.getDescription(),
+            bootcamp.getLaunchDate(),
+            bootcamp.getDuration()
+        );
+    }
 }
