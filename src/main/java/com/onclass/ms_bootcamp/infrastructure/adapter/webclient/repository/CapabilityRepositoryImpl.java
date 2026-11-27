@@ -24,6 +24,7 @@ public class CapabilityRepositoryImpl implements CapabilityRepository {
 
     private static final String ASSOCIATE_CAPABILITY_PATH = "/api/v1/capabilities/associate-bootcamp";
     private static final String GET_CAPABILITIES_PATH = "/api/v1/capabilities/by-bootcamp/{bootcampId}";
+    private static final String DELETE_CAPABILITIES = "/api/v1/capabilities/by-bootcamp/{bootcampId}";
 
     private final WebClient webClient;
     private final CapabilityClientDtoMapper capabilityClientDtoMapper;
@@ -62,6 +63,23 @@ public class CapabilityRepositoryImpl implements CapabilityRepository {
                 Mono.error(new BusinessException(ErrorCode.CAPABILITY_SERVICE_UNAVAILABLE)))
             .bodyToFlux(CapabilityClientDto.class)
             .map(capabilityClientDtoMapper::toDomain)
+            .onErrorMap(WebClientRequestException.class, ex ->
+                new BusinessException(ErrorCode.CAPABILITY_SERVICE_UNAVAILABLE));
+    }
+
+    @Override
+    public Mono<Void> deleteCapabilitiesByBootcampId(Long bootcampId) {
+        return webClient.delete()
+            .uri(DELETE_CAPABILITIES, bootcampId)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
+                clientResponse.bodyToMono(ErrorResponseDto.class)
+                    .flatMap(errorBody -> Mono.error(
+                        new BusinessException(ErrorCode.DELETE_CAPABILITIES_ERROR, errorBody.getDescription())
+                    )))
+            .onStatus(HttpStatusCode::is5xxServerError, clientResponse ->
+                Mono.error(new BusinessException(ErrorCode.CAPABILITY_SERVICE_UNAVAILABLE)))
+            .bodyToMono(Void.class)
             .onErrorMap(WebClientRequestException.class, ex ->
                 new BusinessException(ErrorCode.CAPABILITY_SERVICE_UNAVAILABLE));
     }

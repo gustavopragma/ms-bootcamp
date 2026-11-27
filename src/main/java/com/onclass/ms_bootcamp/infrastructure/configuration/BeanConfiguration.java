@@ -1,5 +1,6 @@
 package com.onclass.ms_bootcamp.infrastructure.configuration;
 
+import com.onclass.ms_bootcamp.application.usecase.DeleteBootcampUseCase;
 import com.onclass.ms_bootcamp.application.usecase.ListBootcampUseCase;
 import com.onclass.ms_bootcamp.application.usecase.RegisterBootcampUseCase;
 import com.onclass.ms_bootcamp.domain.repository.BootcampRepository;
@@ -28,6 +29,17 @@ public class BeanConfiguration {
         CapabilityRepository capabilityRepository
     ) {
         return new RegisterBootcampUseCase(
+            bootcampRepository,
+            capabilityRepository
+        );
+    }
+
+    @Bean
+    public DeleteBootcampUseCase deleteBootcampUseCase(
+        BootcampRepository bootcampRepository,
+        CapabilityRepository capabilityRepository
+    ) {
+        return new DeleteBootcampUseCase(
             bootcampRepository,
             capabilityRepository
         );

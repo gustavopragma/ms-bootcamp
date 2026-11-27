@@ -1,5 +1,6 @@
 package com.onclass.ms_bootcamp.infrastructure.handler;
 
+import com.onclass.ms_bootcamp.application.usecase.DeleteBootcampUseCase;
 import com.onclass.ms_bootcamp.application.usecase.ListBootcampUseCase;
 import com.onclass.ms_bootcamp.application.usecase.RegisterBootcampUseCase;
 import com.onclass.ms_bootcamp.domain.exception.BusinessException;
@@ -26,6 +27,7 @@ public class BootcampHandler {
 
     private final ListBootcampUseCase listBootcampUseCase;
     private final RegisterBootcampUseCase registerBootcampUseCase;
+    private final DeleteBootcampUseCase deleteBootcampUseCase;
     private final BootcampRestMapper bootcampRestMapper;
     private final ValidationDto validationDto;
 
@@ -60,5 +62,11 @@ public class BootcampHandler {
             .flatMap(bootcampResponseDto ->
                 ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(bootcampResponseDto));
+    }
+
+    public Mono<ServerResponse> deleteBootcamp(ServerRequest serverRequest) {
+        Long id = Long.valueOf(serverRequest.pathVariable("bootcampId"));
+        return deleteBootcampUseCase.deleteBootcamp(id)
+            .then(ServerResponse.noContent().build());
     }
 }
