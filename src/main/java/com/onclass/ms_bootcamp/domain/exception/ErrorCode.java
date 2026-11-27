@@ -9,7 +9,9 @@ public enum ErrorCode {
     VALIDATION_ERROR("SE_006", "Validation error"),
     CAPABILITY_SERVICE_UNAVAILABLE("SE007", "Capability service is currently unavailable"),
     INVALID_PAGINATION_PARAMS("SE008", "Page must be >= 0 and size must be > 0"),
-    INVALID_SORT_PARAMS("SE009", "Invalid sortBy value(name, capabilityCount) or sortDirection(ASC, DESC)");
+    INVALID_SORT_PARAMS("SE009", "Invalid sortBy value(name, capabilityCount) or sortDirection(ASC, DESC)"),
+    BOOTCAMP_NOT_FOUND("SE010", "Bootcamp no exists"),
+    DELETE_CAPABILITIES_ERROR("SE011", "Error deleting capabilities in capability service");
 
 
     private final String code;

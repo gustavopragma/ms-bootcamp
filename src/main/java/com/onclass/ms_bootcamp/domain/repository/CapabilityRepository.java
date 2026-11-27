@@ -9,4 +9,5 @@ import java.util.List;
 public interface CapabilityRepository {
     Mono<Void> associateCapabilities(Long bootcampId, List<Long> capabilityIds);
     Flux<Capability> findCapabilitiesByBootcampId(Long bootcampId);
+    Mono<Void> deleteCapabilitiesByBootcampId(Long bootcampId);
 }
